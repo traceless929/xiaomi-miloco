@@ -1,0 +1,6 @@
+# Fork 专属路径：向 XiaoMi/xiaomi-miloco 提 PR 时不得包含
+# 供 scripts/check-upstream-pr.sh 读取，一行一个路径（支持目录后缀 /）
+AGENTS.md
+.cursor/
+.fork-only
+scripts/check-upstream-pr.sh

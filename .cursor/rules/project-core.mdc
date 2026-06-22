@@ -1,0 +1,15 @@
+---
+description: Miloco 项目核心约定（全局，Fork 本地专用，勿提交官方 PR）
+alwaysApply: true
+---
+
+# Miloco 核心约定
+
+- 先读 `AGENTS.md` 与 `knowledge/README.md`，再改代码。
+- 最小改动：只动任务相关文件，不顺手重构。
+- 后端分层：Router → Service/Runner → Repo；不在 router 写业务或 SQL。
+- 配置事实源：`settings.py` / `settings.yaml` / `settings.schema.json`；知识库只指路不复制默认值。
+- Skill 只改 `plugins/skills/`，改后 `plugins/openclaw` 需 `pnpm run build`。
+- Server 单进程，不支持 multi-worker。
+- 测试：backend `uv run task test`；插件 `pnpm test`；web `pnpm test`。
+- 非商业许可；未要求勿提交 commit。

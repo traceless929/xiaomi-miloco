@@ -1,0 +1,13 @@
+---
+description: OpenClaw 插件与 Skill（TypeScript）
+globs: plugins/**/*.{ts,tsx,md}
+alwaysApply: false
+---
+
+# OpenClaw 插件
+
+- 插件源码：`plugins/openclaw/src/`；Skill 契约：`plugins/skills/*/SKILL.md`（唯一源）。
+- 构建会把 skills 复制进插件；改 SKILL 后必须 `pnpm run build` + `openclaw plugins install .`。
+- 插件通过 `miloco-cli` 或 HTTP 调后端；保持与 `settings.schema.json` / API 契约一致。
+- Webhook、gateway 工具见 `plugins/openclaw/src/utils/`。
+- 提交前：`cd plugins/openclaw && pnpm test`。

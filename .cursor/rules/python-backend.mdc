@@ -1,0 +1,14 @@
+---
+description: Python 后端（FastAPI / 感知 / 规则）
+globs: backend/**/*.py
+alwaysApply: false
+---
+
+# Python 后端
+
+- uv workspace：`backend/miloco`（主服务）、`backend/miot`（SDK）。
+- 新 API：域内 `router.py` → `service.py` → `database/*_repo.py`；响应用 `NormalResponse`。
+- 配置通过 `MilocoSettings`（`config/settings.py`），勿硬编码路径；`$MILOCO_HOME` 为运行时根。
+- 异步后台循环放 `runner.py`，不在 router 里 `while True`。
+- 改 schema 时同步检查：OpenAPI 消费方、CLI、Skill 文档中的字段名。
+- 提交前：`cd backend && uv run task lint && uv run task test`。

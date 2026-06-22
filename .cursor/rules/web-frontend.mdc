@@ -1,0 +1,13 @@
+---
+description: 家庭面板前端（React + Vite）
+globs: web/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# 家庭面板（web/）
+
+- React 19 + Vite + Tailwind；i18n 在 `web/src/i18n/`（默认中文）。
+- 开发：`pnpm dev` 代理 `/api` 到 backend；生产构建产出 `web/dist/`。
+- 设计规范见 `knowledge/07-design/`；遵循小米品牌语言与 design tokens。
+- API 调用带 Bearer token（与 `server.token` 一致）；勿假设多 worker。
+- 提交前：`pnpm typecheck && pnpm test`。
