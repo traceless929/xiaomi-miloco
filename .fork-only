@@ -3,5 +3,9 @@
 AGENTS.md
 .cursor/
 docs/
+miloco-agent/
+scripts/miloco-agent-install.sh
+scripts/miloco-agent-run.sh
+scripts/miloco-agent-supervisor.conf.example
 .fork-only
 scripts/check-upstream-pr.sh
