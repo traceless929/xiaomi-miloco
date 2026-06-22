@@ -28,11 +28,14 @@ git push origin main
 ```
 AGENTS.md
 .cursor/
+docs/
 .fork-only
 scripts/check-upstream-pr.sh
 ```
 
 清单亦见 [`.fork-only`](.fork-only)（供脚本读取）。
+
+**项目开发文档**（结构、架构、开发落地）：[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
 
 ### 向官方贡献 PR
 
@@ -81,10 +84,11 @@ scripts/          # build.sh / install.sh / install-guide.md
 
 ## 读文档的顺序
 
-1. **[knowledge/README.md](knowledge/README.md)** — 知识库规范与全局索引
-2. **[knowledge/01-overview/overview.md](knowledge/01-overview/overview.md)** — 架构、分层、数据流
-3. **[knowledge/06-dev-guide/dev-guide.md](knowledge/06-dev-guide/dev-guide.md)** — 安装、启动、测试、配置
-4. 改具体模块时读 **knowledge/03-features/** 对应篇目
+1. **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — 项目结构、架构、模块职责与开发落地（Fork 专属）
+2. **[knowledge/README.md](knowledge/README.md)** — 知识库规范与全局索引
+3. **[knowledge/01-overview/overview.md](knowledge/01-overview/overview.md)** — 架构、分层、数据流
+4. **[knowledge/06-dev-guide/dev-guide.md](knowledge/06-dev-guide/dev-guide.md)** — 安装、启动、测试、配置
+5. 改具体模块时读 **knowledge/03-features/** 对应篇目
 
 **原则**：配置默认值、API 字段、函数内部流程以代码 / schema / `--help` 为准。
 
