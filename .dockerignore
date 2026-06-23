@@ -1,0 +1,11 @@
+# Docker 构建上下文排除（fork 容器构建用）
+.git
+**/.venv
+**/node_modules
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+dist/
+miloco-agent/.venv
+backend/miloco/src/miloco/perception/data/
+assets/

@@ -155,6 +155,18 @@ DYNAMIC 规则触发后，Agent 能查设备并执行动作（至少一条完整
 | P2-5 | 回复路径 `feishu.send_text` | 出站 |
 | P2-6 | MVP：`default_receive_open_id` 配置 | 免绑定 |
 | P2-7 | `bindings` 表 + 「绑定」口令（可选） | 多人预备 |
+| P2-8 | 飞书多轮上下文（按 `open_id` 会话 + 历史 N 轮） | ✅ |
+
+### 5.5 待办：飞书对话上下文（P2+）
+
+> 当前每轮新建 Agent，**无**跨消息记忆。后续在不改 `backend/` 前提下补齐。
+
+| # | 任务 | 说明 |
+|---|------|------|
+| P2+-1 | `session_key=feishu:{open_id}` | 按用户隔离 |
+| P2+-2 | `runtime/session_store.py` | 进程内或 `$MILOCO_HOME/agent/sessions/` 持久化最近 N 轮 |
+| P2+-3 | TurnRunner 复用 Agent 状态或注入 history | 支持「刚才那个灯」类指代 |
+| P2+-4 | 配置 `agent.feishu.history_turns` / TTL | 可关停或限长 |
 
 ### 5.3 验收标准
 
@@ -178,11 +190,11 @@ DYNAMIC 规则触发后，Agent 能查设备并执行动作（至少一条完整
 
 | # | 任务 | 产出 |
 |---|------|------|
-| P3-1 | `prompt`：`suggestion` profile | 移植 OpenClaw 块 |
-| P3-2 | `notify/policy.py`：L1/L2/L3 + 选人 | 确定性逻辑 |
-| P3-3 | Tool `notify_send` 或直调 policy | 统一出口 |
-| P3-4 | `device_speaker_tts` tool（调 /api/miot） | TTS 通道 |
-| P3-5 | 联调：模拟 suggestion dispatch | 飞书 / TTS 二选一 |
+| P3-1 | `prompt`：`suggestion` profile | ✅ 感知格式 + notify 指引 |
+| P3-2 | `notify/policy.py`：L1/L2/L3 + 选人 | ✅ 渠道路由（简化版） |
+| P3-3 | Tool `notify_send` 或直调 policy | ✅ `notify_send` |
+| P3-4 | `device_speaker_tts` tool（调 /api/miot） | ✅ play-text |
+| P3-5 | 联调：模拟 suggestion dispatch | ✅ 契约测试 |
 
 ### 6.3 验收标准
 
@@ -205,12 +217,12 @@ DYNAMIC 规则触发后，Agent 能查设备并执行动作（至少一条完整
 
 | # | 任务 | 产出 |
 |---|------|------|
-| P4-1 | `cron/scheduler.py` APScheduler | 进程内调度 |
-| P4-2 | 四 job 定义 + minimal prompt 模板 | 对齐 scheduler.ts |
-| P4-3 | Tools：`home_profile_read/write`, `perception_digest` 等 | 逐步补齐 |
-| P4-4 | `trace/store.py` 记录 turn meta | 对齐 poller |
-| P4-5 | `get_trace` 完整实现 | observability 可用 |
-| P4-6 | `prompt`：`full` profile + catalog 缓存 | 移植 catalog 节流 |
+| P4-1 | `cron/scheduler.py` APScheduler | ✅ 默认关闭，配置开启 |
+| P4-2 | 四 job 定义 + minimal prompt 模板 | ✅ 对齐 scheduler.ts |
+| P4-3 | Tools：`home_profile_*`, `perception_logs`, `memory_perception_*` | ✅ |
+| P4-4 | `trace/store.py` 记录 turn meta | ✅ |
+| P4-5 | `get_trace` 完整实现 | ✅ |
+| P4-6 | `prompt`：`full` profile + catalog 缓存 | ✅ |
 
 ### 7.3 验收标准
 
@@ -234,13 +246,24 @@ DYNAMIC 规则触发后，Agent 能查设备并执行动作（至少一条完整
 
 | # | 任务 | 产出 |
 |---|------|------|
-| P5-1 | 用户任务 cron 执行器（读 Server task API） | 替代 OpenClaw cron 制品 |
-| P5-2 | `agent_pending` 清理协议对齐 | 读 task 模块文档 |
-| P5-3 | `scripts/miloco-agent-install.sh` | venv + 写 webhook_url |
-| P5-4 | supervisor 示例配置 | 7×24 |
-| P5-5 | `miloco-agent/README.md` 用户手册 | 安装/排错 |
-| P5-6 | 对照清单：OpenClaw 功能退役表 | 见 §10 |
-| P5-7 | 可选：Docker Compose（Server + Agent） | fork 专属 |
+| P5-1 | 用户任务 cron 执行器（读 Server task API） | ✅ `cron/user_registry.py` |
+| P5-2 | `agent_pending` 清理协议对齐 | ✅ task_disable/delete + cron ops |
+| P5-3 | `scripts/miloco-agent-install.sh` | ✅ |
+| P5-4 | supervisor 示例配置 | ✅ |
+| P5-5 | `miloco-agent/README.md` 用户手册 | ✅ |
+| P5-6 | 对照清单：OpenClaw 功能退役表 | ✅ miloco-agent/README |
+| P5-7 | 可选：Docker Compose（Server + Agent） | ❌ 不做（见 §8.5） |
+
+### 8.5 部署：为何不做 Docker Compose
+
+Miloco Server 需与摄像头处于**同一 LAN**，才能拉流/感知。默认 bridge 网络的容器与宿主机/局域网隔离，摄像头不可达。
+
+| 方式 | 建议 |
+|------|------|
+| **本机 / NAS 直跑** | ✅ 推荐：`miloco-cli service` + `miloco-agent-run.sh` |
+| **supervisor 7×24** | ✅ 见 `scripts/miloco-agent-supervisor.conf.example` |
+| **Docker Compose（bridge）** | ❌ 不推荐：破坏摄像头内网可达性 |
+| **Docker `network_mode: host`** | ⚠️ 仅当必须容器化时再评估；macOS Docker 对 host 网络支持有限，Linux 家用机可行 |
 
 ### 8.3 验收标准
 
@@ -251,6 +274,31 @@ DYNAMIC 规则触发后，Agent 能查设备并执行动作（至少一条完整
 ### 8.4 官方代码改动
 
 **无。**
+
+---
+
+## 8.6 P6 — 管理配置平台
+
+> 详 [ADMIN_PLATFORM.md](./ADMIN_PLATFORM.md)
+
+### 目标
+
+在不改 `backend/` / `web/` 前提下，提供 Agent 侧 LLM / 飞书 / Cron 的可视化配置与运维入口。
+
+### 任务清单
+
+| # | 任务 | 产出 |
+|---|------|------|
+| P6-1 | `/admin/api/*` REST | ✅ status / config / reload / crons / sessions |
+| P6-2 | 脱敏读写 `config.json` `agent.*` | ✅ `admin/config_io.py` |
+| P6-3 | 静态管理台 `/admin` | ✅ `admin/static/index.html` |
+| P6-4 | pytest + 文档 | ✅ `test_admin.py` |
+
+### 验收标准
+
+- 浏览器打开 `http://127.0.0.1:18789/admin` 可查看状态并保存 Cron/LLM/飞书配置
+- `PATCH /admin/api/config` + `POST /admin/api/reload` 后 Cron 开关生效
+- 密钥在 API 响应中脱敏
 
 ---
 
@@ -326,9 +374,11 @@ dependencies = [
 1. 安装官方 Miloco（`install.sh --dev` 或 release）——**不变**
 2. 停 OpenClaw gateway
 3. `bash scripts/miloco-agent-install.sh` 写 `agent.webhook_url` / 生成 `auth_bearer`
-4. 配置 `agent.feishu` / `agent.llm`（Sidecar 读 config.json 扩展字段）
+4. 配置 `agent.feishu` / `agent.llm` / `agent.cron`（Sidecar 读 config.json 扩展字段）
 5. 启动 `scripts/miloco-agent-run.sh`
 6. `miloco-cli service restart`（若已在跑）
+
+Cron 可选：`"agent": { "cron": { "enabled": true, "timezone": "Asia/Shanghai" } }`（默认关闭）。
 
 ---
 
@@ -337,6 +387,8 @@ dependencies = [
 | 项 | 说明 |
 |----|------|
 | 多 IM 渠道 | 抽象 `channels/base.py` |
+| 飞书多轮上下文 | ✅ `session_store` + `history_turns`（§5.5） |
+| 分机部署 | Sidecar 与 Server 分机器（同内网）；当前默认同机 |
 | 合入官方 optional extra | 仅当小米接受架构后，再议 `miloco[agent]` |
 | Skill 自动生成 Tool | 从 SKILL.md 批量生成 schema |
 | Web 面板 Agent 状态 | 需官方 API 扩展时再提 PR |
