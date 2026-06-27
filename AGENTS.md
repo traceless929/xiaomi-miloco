@@ -13,7 +13,12 @@
 | `origin` | [traceless929/xiaomi-miloco](https://github.com/traceless929/xiaomi-miloco) | 个人 fork，日常 push |
 | `upstream` | [XiaoMi/xiaomi-miloco](https://github.com/XiaoMi/xiaomi-miloco) | 官方源，同步与向上游提 PR |
 
+`miloco-agent/` 为 **Git Submodule**，独立仓库：[traceless929/miloco-agent](https://github.com/traceless929/miloco-agent)。
+
 ```bash
+git clone --recurse-submodules https://github.com/traceless929/xiaomi-miloco.git
+# 或已克隆：git submodule update --init --recursive
+
 git fetch upstream
 git merge upstream/main          # 或 rebase，按团队习惯
 git push origin main
@@ -74,6 +79,7 @@ git checkout upstream/main -- AGENTS.md 2>/dev/null || git rm -f AGENTS.md 2>/de
 ```
 backend/          # Python uv workspace：miloco（FastAPI 服务）+ miot（SDK 子包）
 cli/              # miloco-cli（Click）
+miloco-agent/     # Git Submodule → traceless929/miloco-agent（Sidecar 源码）
 plugins/
   openclaw/       # TypeScript OpenClaw 插件
   skills/         # miloco-* Skill 文档（构建时复制进插件）

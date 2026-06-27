@@ -16,6 +16,28 @@
 
 用仓库根目录 **`miloco-agent/`** Sidecar（AgentScope + 飞书）兼容现有 `agent.webhook_url`，退役 OpenClaw；合并 [upstream](https://github.com/XiaoMi/xiaomi-miloco) 时官方树保持零改动。
 
+## 独立仓库（Git Submodule）
+
+`miloco-agent/` 已拆为独立仓库，主 fork 通过 **Git Submodule** 引用：
+
+| 仓库 | 说明 |
+|------|------|
+| [traceless929/miloco-agent](https://github.com/traceless929/miloco-agent) | Sidecar 源码、测试、发布 |
+| [traceless929/xiaomi-miloco](https://github.com/traceless929/xiaomi-miloco) | Fork 主仓（部署脚本、`docs/`、`docker/`、`plugins/`） |
+
+```bash
+# 克隆主仓（含子模块）
+git clone --recurse-submodules https://github.com/traceless929/xiaomi-miloco.git
+
+# 已克隆但未拉子模块
+git submodule update --init --recursive
+
+# 更新子模块到主仓 pin 的 commit
+git submodule update --remote miloco-agent   # 可选：跟踪子仓 main 最新
+```
+
+Sidecar 日常开发可在 `miloco-agent/` 内独立 commit/push，再回到主仓 bump submodule 指针。
+
 ## 实现状态
 
 | 阶段 | 状态 |

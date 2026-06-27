@@ -6,6 +6,13 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 AGENT_DIR="$ROOT/miloco-agent"
 VENV_DIR="${MILOCO_AGENT_VENV:-$ROOT/miloco-agent/.venv}"
 
+if [[ ! -f "$AGENT_DIR/pyproject.toml" ]]; then
+  echo "[miloco-agent-install] 未找到 $AGENT_DIR/pyproject.toml" >&2
+  echo "  miloco-agent 为 Git Submodule，请先执行：" >&2
+  echo "    git submodule update --init --recursive" >&2
+  exit 1
+fi
+
 need_python() {
   if command -v python3.12 >/dev/null 2>&1; then echo python3.12; return; fi
   if command -v python3.11 >/dev/null 2>&1; then echo python3.11; return; fi
