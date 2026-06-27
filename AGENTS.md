@@ -94,8 +94,9 @@ scripts/          # 官方 build/install + fork 转发脚本（miloco-agent-*.sh
 
 ## 读文档的顺序
 
-1. **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** — 项目结构、架构、模块职责与开发落地（Fork 专属）
-2. **[docs/agent/ARCHITECTURE.md](docs/agent/ARCHITECTURE.md)** — 用 AgentScope Sidecar 替换 OpenClaw（**不侵入官方 backend**）
+1. **[miloco-agent/docs/DEVELOPMENT.md](miloco-agent/docs/DEVELOPMENT.md)** — Fork 项目结构、Sidecar 与部署
+2. **[miloco-agent/docs/agent/ARCHITECTURE.md](miloco-agent/docs/agent/ARCHITECTURE.md)** — AgentScope Sidecar 替换 OpenClaw
+3. **[miloco-agent/docs/EXTERNAL_MILOCO.md](miloco-agent/docs/EXTERNAL_MILOCO.md)** — 仅 Sidecar 对接外部 Miloco
 3. **[knowledge/README.md](knowledge/README.md)** — 知识库规范与全局索引
 4. **[knowledge/01-overview/overview.md](knowledge/01-overview/overview.md)** — 架构、分层、数据流
 5. **[knowledge/06-dev-guide/dev-guide.md](knowledge/06-dev-guide/dev-guide.md)** — 安装、启动、测试、配置

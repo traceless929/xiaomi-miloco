@@ -78,3 +78,8 @@ openspec
 _workspace
 _local/
 xaf/
+
+# Fork 本地构建/数据残留（勿提交）
+/memory/
+/backend/docker/
+/backend/miloco/src/miloco/static/

@@ -4,9 +4,7 @@ AGENTS.md
 miloco-agent/
 .fork-only
 scripts/check-upstream-pr.sh
-scripts/miloco-agent-install.sh
-scripts/miloco-agent-run.sh
-scripts/miloco-agent-restart.sh
-scripts/miloco-caffeinate.sh
-scripts/miloco-local-run.sh
-scripts/deploy-linux-docker.sh
+scripts/miloco-stack.sh
+scripts/setup-external-miloco.sh
+scripts/miloco-agent-only.sh
+scripts/miloco-agent-*.sh
