@@ -1,16 +1,12 @@
 # Fork 专属路径：向 XiaoMi/xiaomi-miloco 提 PR 时不得包含
-# 供 scripts/check-upstream-pr.sh 读取，一行一个路径（支持目录后缀 /）
 AGENTS.md
 .cursor/
-docs/
-docker/
 miloco-agent/
+.fork-only
+scripts/check-upstream-pr.sh
 scripts/miloco-agent-install.sh
 scripts/miloco-agent-run.sh
 scripts/miloco-agent-restart.sh
 scripts/miloco-caffeinate.sh
 scripts/miloco-local-run.sh
 scripts/deploy-linux-docker.sh
-scripts/miloco-agent-supervisor.conf.example
-.fork-only
-scripts/check-upstream-pr.sh

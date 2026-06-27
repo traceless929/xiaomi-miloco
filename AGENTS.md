@@ -33,17 +33,19 @@ git push origin main
 ```
 AGENTS.md
 .cursor/
-docs/
-miloco-agent/
+miloco-agent/                    # Git Submodule（含 scripts/ docker/ docs/ 增量）
 .fork-only
 scripts/check-upstream-pr.sh
-scripts/miloco-agent-*.sh
+scripts/miloco-agent-*.sh        # 转发到 miloco-agent/scripts/
+scripts/miloco-local-run.sh
+scripts/miloco-caffeinate.sh
+scripts/deploy-linux-docker.sh
 ```
 
-清单亦见 [`.fork-only`](.fork-only)（供脚本读取）。
+清单亦见 [`.fork-only`](.fork-only)。
 
-**项目开发文档**：[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)  
-**Agent 替换 OpenClaw（零侵入官方代码）**：[docs/agent/ARCHITECTURE.md](docs/agent/ARCHITECTURE.md) · [docs/agent/DEVELOPMENT_PLAN.md](docs/agent/DEVELOPMENT_PLAN.md)
+**Agent 文档**：[miloco-agent/docs/agent/](miloco-agent/docs/agent/)  
+**项目开发文档**：[miloco-agent/docs/DEVELOPMENT.md](miloco-agent/docs/DEVELOPMENT.md)
 
 ### 向官方贡献 PR
 
@@ -79,14 +81,13 @@ git checkout upstream/main -- AGENTS.md 2>/dev/null || git rm -f AGENTS.md 2>/de
 ```
 backend/          # Python uv workspace：miloco（FastAPI 服务）+ miot（SDK 子包）
 cli/              # miloco-cli（Click）
-miloco-agent/     # Git Submodule → traceless929/miloco-agent（Sidecar 源码）
+miloco-agent/     # Git Submodule → traceless929/miloco-agent（Sidecar + docker + docs + scripts）
 plugins/
   openclaw/       # TypeScript OpenClaw 插件
-  skills/         # miloco-* Skill 文档（构建时复制进插件）
+  skills/         # miloco-* Skill 文档（官方，Sidecar 只读引用）
 web/              # 家庭面板（React 19 + Vite + Tailwind）
-knowledge/        # 项目知识库（与官方共享，改功能时同步更新）
-scripts/          # build.sh / install.sh / install-guide.md
-.agents/commands/ # Agent 斜杠命令（官方仓库，review-pr 指向 XiaoMi）
+knowledge/        # 项目知识库（与官方共享）
+scripts/          # 官方 build/install + fork 转发脚本（miloco-agent-*.sh）
 ```
 
 ---
